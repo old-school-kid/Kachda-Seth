@@ -55,6 +55,7 @@ validation_generator = validation_datagen.flow_from_directory(validation_dir,
                                                               shuffle = True)
 
 K.clear_session()
+# Can use efficient-net too
 base_model = MobileNet(
     include_top=False, weights='imagenet', input_tensor=None,
     input_shape=(224,224,3), classes = 2
@@ -150,6 +151,7 @@ history = model.fit(train_generator,
                     validation_data=validation_generator,
                     callbacks=my_callbacks)
 
+# Plot accuracy and loss graph
 acc = history.history['acc']
 val_acc = history.history['val_acc']
 
@@ -177,6 +179,7 @@ plt.ylim([0,max(plt.ylim())])
 plt.title('Training and Validation Loss')
 plt.show()
 
+# Fine tune model
 for layer in model.layers:
   layer.trainable=True
 
@@ -220,8 +223,7 @@ plt.ylim([0,max(plt.ylim())])
 plt.title('Training and Validation Loss')
 plt.show()
 
-"""Creating the TFLITE model"""
-
+# Creating the TFLITE model
 model = tf.keras.models.load_model('waste-classifier.hdf5')
 converter = tf.lite.TFLiteConverter.from_keras_model(model)
 
