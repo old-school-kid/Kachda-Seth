@@ -1,25 +1,16 @@
 import numpy as np
-import pandas as pd
-import os
-import random
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-import keras.backend as K
+import tensorflow.keras.backend as K
 
-from tensorflow.keras.layers import *
-from tensorflow.keras.callbacks import *
-from tensorflow.keras.optimizers import *
-from tensorflow.keras.applications import MobileNet, MobileNetV2, DenseNet121, NASNetMobile, EfficientNetB0, EfficientNetB1
-from tensorflow.keras.activations import *
-from tensorflow.keras.losses import *
-from keras.callbacks import LearningRateScheduler
+from tensorflow.keras.layers import Input, Dense, Dropout, Flatten
+from tensorflow.keras.callbacks import ReduceLROnPlateau, ModelCheckpoint
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.applications import MobileNet
 
 import cv2
-from google.colab.patches import cv2_imshow
+import pathlib
 import matplotlib.pyplot as plt
-import joblib
-from keras.preprocessing.image import load_img
-from keras.preprocessing import image
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -230,7 +221,6 @@ converter = tf.lite.TFLiteConverter.from_keras_model(model)
 converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_LATENCY, tf.lite.Optimize.DEFAULT]
 tflite_model = converter.convert()
 
-import pathlib
 tflite_model_file = pathlib.Path(FILEPATH +'waste-classifier.tflite')
 tflite_model_file.write_bytes(tflite_model)
 
